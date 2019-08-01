@@ -131,7 +131,7 @@ retS, MLS, dLS, MRS, dRS, R, T, E, F= cv2.stereoCalibrate(objpoints,
                                                           mtxR,
                                                           distR,
                                                           ChessImaR.shape[::-1],
-                                                          criteria_stereo,
+                                                          criteria = criteria_stereo,
                                                           flags = cv2.CALIB_FIX_INTRINSIC)
 
 # StereoRectify function
