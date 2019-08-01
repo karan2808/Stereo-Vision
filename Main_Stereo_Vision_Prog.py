@@ -111,8 +111,8 @@ print('Cameras Ready to use')
 #********************************************
 
 # StereoCalibrate function
-flags = 0
-flags |= cv2.CALIB_FIX_INTRINSIC
+#flags = 0
+#flags |= cv2.CALIB_FIX_INTRINSIC
 #flags |= cv2.CALIB_FIX_PRINCIPAL_POINT
 #flags |= cv2.CALIB_USE_INTRINSIC_GUESS
 #flags |= cv2.CALIB_FIX_FOCAL_LENGTH
@@ -132,7 +132,7 @@ retS, MLS, dLS, MRS, dRS, R, T, E, F= cv2.stereoCalibrate(objpoints,
                                                           distR,
                                                           ChessImaR.shape[::-1],
                                                           criteria_stereo,
-                                                          flags)
+                                                          flags = cv2.CALIB_FIX_INTRINSIC)
 
 # StereoRectify function
 rectify_scale= 0 # if 0 image croped, if 1 image nor croped
@@ -188,8 +188,8 @@ while True:
     retL, frameL= CamL.read()
 
     # Rectify the images on rotation and alignement
-    Left_nice= cv2.remap(frameL,Left_Stereo_Map[0],Left_Stereo_Map[1], cv2.INTER_LANCZOS4, cv2.BORDER_CONSTANT, 0)  # Rectify the image using the kalibration parameters founds during the initialisation
-    Right_nice= cv2.remap(frameR,Right_Stereo_Map[0],Right_Stereo_Map[1], cv2.INTER_LANCZOS4, cv2.BORDER_CONSTANT, 0)
+    Left_nice= cv2.remap(frameL,Left_Stereo_Map[0],Left_Stereo_Map[1], interpolation = cv2.INTER_LANCZOS4, borderMode = cv2.BORDER_CONSTANT)  # Rectify the image using the kalibration parameters founds during the initialisation
+    Right_nice= cv2.remap(frameR,Right_Stereo_Map[0],Right_Stereo_Map[1], interpolation = cv2.INTER_LANCZOS4, borderMode = cv2.BORDER_CONSTANT)
 
 ##    # Draw Red lines
 ##    for line in range(0, int(Right_nice.shape[0]/20)): # Draw the Lines on the images Then numer of line is defines by the image Size/20
@@ -231,9 +231,9 @@ while True:
     # Colors map
     dispc= (closing-closing.min())*255
     dispC= dispc.astype(np.uint8)                                   # Convert the type of the matrix from float32 to uint8, this way you can show the results with the function cv2.imshow()
-    disp_Color= cv2.applyColorMap(dispC,cv2.COLORMAP_OCEAN)         # Change the Color of the Picture into an Ocean Color_Map
-    filt_Color= cv2.applyColorMap(filteredImg,cv2.COLORMAP_OCEAN) 
-
+    disp_Color= cv2.applyColorMap(dispC,cv2.COLORMAP_HOT)         # Change the Color of the Picture into an Ocean Color_Map
+    filt_Color= cv2.applyColorMap(filteredImg,cv2.COLORMAP_HOT) 
+    filt_Color= cv2.flip( filt_Color, 1 )
     # Show the result for the Depth_image
     #cv2.imshow('Disparity', disp)
     #cv2.imshow('Closing',closing)
